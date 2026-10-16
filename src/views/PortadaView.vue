@@ -16,7 +16,6 @@
       </ul>
     </div>
 
-    <
     <div class="card menu-card">
       <h3>🚀 Menú de Actividades</h3>
       <p>Selecciona una directiva para explorar su explicación y ejemplo interactivo:</p>
