@@ -1,41 +1,37 @@
 <template>
   <div class="vista">
-    <h2>Directiva: v-bind:key (:key)</h2>
+    <h2>Directiva: v-for</h2>
     
     <p>
-      El atributo especial <code>:key</code> le proporciona un identificador único e invariable a cada elemento iterado con <code>v-for</code>[cite: 10]. 
-      Esto permite que la de la máquina virtual de Vue realice un seguimiento de los nodos y reutilice componentes sin fallos visuales.
+      La directiva <code>v-for</code> se utiliza para renderizar una lista de elementos iterando sobre un arreglo u objeto de datos. 
+      Genera dinámicamente un bloque HTML por cada elemento presente en la colección.
     </p>
 
     <!-- Ejemplo de la Estructura -->
     <div class="estructura">
       <h3>Sintaxis de la Estructura:</h3>
-      <pre><code>&lt;div v-for="objeto in coleccion" :key="objeto.id"&gt;
-  &#123;&#123; objeto.nombre &#125;&#125;
-&lt;/div&gt;</code></pre>
+      <pre><code>&lt;ul&gt;
+  &lt;li v-for="(item, index) in lista" :key="item.id"&gt;
+    &#123;&#123; index &#125;&#125; - &#123;&#123; item.nombre &#125;&#125;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
     </div>
 
     <!-- Aplicación Práctica -->
     <div class="ejemplo">
       <h3>Aplicación Interactiva:</h3>
-      <p>Catálogo de lenguajes de programación enlazados por una Clave Única (ID):</p>
+      <p>Agrega nuevas materias al arreglo dinámico:</p>
 
-      <table class="tabla-datos">
-        <thead>
-          <tr>
-            <th>Clave Unívoca (:key)</th>
-            <th>Lenguaje</th>
-            <th>Paradigma</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="lenguaje in lenguajes" :key="lenguaje.id">
-            <td><code>ID-{{ lenguaje.id }}</code></td>
-            <td><strong>{{ lenguaje.nombre }}</strong></td>
-            <td>{{ lenguaje.paradigma }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="input-grupo">
+        <input v-model="nuevaMateria" placeholder="Ej. Redes de Computadoras" @keyup.enter="agregarMateria" />
+        <button @click="agregarMateria">Agregar Materia</button>
+      </div>
+
+      <ul class="lista-items">
+        <li v-for="(materia, index) in materias" :key="materia.id">
+          <span>📌 <strong>Materia {{ index + 1 }}:</strong> {{ materia.nombre }}</span>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -43,10 +39,18 @@
 <script setup>
 import { ref } from 'vue'
 
-const lenguajes = ref([
-  { id: 101, nombre: 'JavaScript', paradigma: 'Multiparadigma' },
-  { id: 102, nombre: 'Python', paradigma: 'Orientado a Objetos / Funcional' },
-  { id: 103, nombre: 'Java', paradigma: 'Orientado a Objetos' },
-  { id: 104, nombre: 'C++', paradigma: 'Multiparadigma' }
+const materias = ref([
+  { id: 1, nombre: 'Sistemas Operativos' },
+  { id: 2, nombre: 'Taller de Bases de Datos' },
+  { id: 3, nombre: 'Conmutación y Enrutamiento' }
 ])
+const nuevaMateria = ref('')
+let siguienteId = 4
+
+const agregarMateria = () => {
+  if (nuevaMateria.value.trim() !== '') {
+    materias.value.push({ id: siguienteId++, nombre: nuevaMateria.value.trim() })
+    nuevaMateria.value = ''
+  }
+}
 </script>
